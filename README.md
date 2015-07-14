@@ -1,13 +1,19 @@
 # Word Print
 
-This simple utility allows you to print documents from webpages with a single click.
-It works by creating new protocol handler *word-print*
+This simple utility for Windows allows you to print documents from webpages with a single click.
+It works by creating new protocol handler **word-print**
 
 We recommand that you test installation before using the utility in automated processes since file association check can sometimes hang the loading.
 
 ## Usage:
+```
 word-print:url=[doc/docx url]&preview=[preview before print]
+```
+
+On webpage:
+```
 <a href="word-print:url=http://example.me/file.docx&preview=1">Print</a>
+```
 
 ## Author
 - [Marek Vavrecan](mailto:vavrecan@gmail.com)
