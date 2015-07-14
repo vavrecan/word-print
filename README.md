@@ -16,7 +16,7 @@ On webpage:
 ```
 From javascript:
 ```
-window.open(link, 'word-print:url=http://example.me/file.docx&preview=1');
+window.open('word-print:url=http://example.me/file.docx&preview=1');
 ```
 
 ## Author
