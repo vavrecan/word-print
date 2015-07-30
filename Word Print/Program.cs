@@ -66,13 +66,23 @@ namespace Word_Print
 
             param = param.Substring((protocol + ":").Length);
 
+            String printer = ""; 
             String url = HttpUtility.ParseQueryString(param).Get("url");
             String preview = HttpUtility.ParseQueryString(param).Get("preview");
 
-            PrintDocument(url, (preview == "1"));
+
+            object defaultPrinter = Microsoft.Win32.Registry.CurrentUser.GetValue("DefaultPrinter");
+            if (defaultPrinter != null)
+                printer = defaultPrinter.ToString();
+
+
+            if (HttpUtility.ParseQueryString(param).Get("printer") != null)
+                printer = HttpUtility.ParseQueryString(param).Get("printer");
+
+            PrintDocument(url, (preview == "1"), printer);
         }
 
-        static void PrintDocument(String url, Boolean preview)
+        static void PrintDocument(String url, Boolean preview, String printer)
         {
             var uri = new Uri(url);
             var extension = System.IO.Path.GetExtension(uri.AbsolutePath);
@@ -114,6 +124,21 @@ namespace Word_Print
 
             BringAppToFront();
             RunWithOutRejected(() => doc.Activate());
+            
+            if (printer != "") {
+                Boolean found = false;
+                foreach (String systemPrinter in System.Drawing.Printing.PrinterSettings.InstalledPrinters) { 
+                    if (systemPrinter.Equals(printer))
+                        found = true;
+                }
+
+                if (!found) {
+                    MessageBox.Show("Printer " + printer + " not found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    printer = "";
+                }
+
+                doc.Application.ActivePrinter = printer;
+            }
 
             if (preview) {
                 RunWithOutRejected(() => doc.PrintPreview());

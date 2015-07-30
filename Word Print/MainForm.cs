@@ -26,12 +26,23 @@ Marek Vavrecan (vavrecan@gmail.com) \line
 https://github.com/vavrecan/word-print \line\line
 
 Usage:\line 
-\deff0 {\fonttbl {\f0 Consolas;}}\fs18 " + Program.protocol + @":url=[doc/docx url]&preview=[preview before print]\line
+\deff0 {\fonttbl {\f0 Consolas;}}\fs18 " + Program.protocol + @":url=[doc/docx url]&preview=[preview before print]&printer=[printer]\line\line
+
+Example:\line
+\deff0 {\fonttbl {\f0 Consolas;}}\fs18 " + Program.protocol + @":url=http://example.me/file.docx&preview=1&printer=Slips+Printer\line
 <a href=" + "\"" + Program.protocol + @":url=http://example.me/file.docx&preview=1" + "\"" + @">Print</a>\line\line
 }";
             richTextBoxInformations.LinkClicked += new LinkClickedEventHandler((object sender, LinkClickedEventArgs e) => {
                 Process.Start(e.LinkText);
             });
+
+            comboBoxPrinters.Items.Add("");
+            foreach (String printer in System.Drawing.Printing.PrinterSettings.InstalledPrinters)
+                comboBoxPrinters.Items.Add(printer);
+
+            object defaultPrinter = Microsoft.Win32.Registry.CurrentUser.GetValue("DefaultPrinter");
+            if (defaultPrinter != null)
+                comboBoxPrinters.Text = defaultPrinter.ToString();
         }
 
         private void buttonInstall_Click(object sender, EventArgs e)
@@ -59,6 +70,11 @@ Usage:\line
         private void buttonTest_Click(object sender, EventArgs e)
         {
             Process.Start(Program.protocol + @":url=http://www.easychair.org/publications/easychair.docx&preview=1");
+        }
+
+        private void comboBoxPrinters_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Microsoft.Win32.Registry.CurrentUser.SetValue("DefaultPrinter", comboBoxPrinters.SelectedItem.ToString());
         }
     }
 }
