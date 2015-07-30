@@ -7,7 +7,7 @@ We recommand that you test installation before using the utility in automated pr
 
 ## Usage:
 ```
-word-print:url=[doc/docx url]&preview=[preview before print]
+word-print:url=[doc/docx url]&preview=[preview before print]&printer=[printer name]
 ```
 
 On webpage:
