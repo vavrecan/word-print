@@ -14,9 +14,15 @@ On webpage:
 ```
 <a href="word-print:url=http://example.me/file.docx&preview=1">Print</a>
 ```
-From javascript:
+Dynamically using javascript:
 ```
-window.open('word-print:url=http://example.me/file.docx&preview=1');
+(function(){
+    var i = document.createElement('iframe');
+    i.style.display = 'none';
+    i.onload = function() { i.parentNode.removeChild(i); };
+    i.src = 'word-print:url=http://example.me/file.docx&preview=1';
+    document.body.appendChild(i);
+})();
 ```
 
 ## Author
